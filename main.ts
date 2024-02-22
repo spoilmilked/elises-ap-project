@@ -1,18 +1,39 @@
 namespace SpriteKind {
     export const Block = SpriteKind.create()
 }
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Block, function (sprite, otherSprite) {
-    zombie.y += 8
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectile2 = sprites.create(assets.image`blade`, SpriteKind.Projectile)
+    projectile2.follow(zombie, 50)
+})
+scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
+    if (tiles.tileAtLocationEquals(location, assets.tile`baracade`)) {
+        sprite.y += -10
+        scene.cameraShake(4, 100)
+        tiles.setTileAt(location, assets.tile`baracade0`)
+    } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade0`)) {
+        sprite.y += -10
+        scene.cameraShake(4, 100)
+        tiles.setTileAt(location, assets.tile`baracade1`)
+    } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`)) {
+        sprite.y += -10
+        scene.cameraShake(4, 100)
+        tiles.setTileAt(location, assets.tile`transparency16`)
+        tiles.setWallAt(location, false)
+    }
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    sprites.destroy(sprite)
 })
 let zombie: Sprite = null
+let projectile2: Sprite = null
 tiles.setCurrentTilemap(tilemap`testing`)
-let baracade = sprites.create(assets.image`myImage`, SpriteKind.Block)
 let mySprite = sprites.create(assets.image`blob`, SpriteKind.Player)
-zombie = sprites.create(assets.image`myImage0`, SpriteKind.Enemy)
-baracade.setPosition(120, 40)
-baracade.setPosition(120, 60)
 controller.moveSprite(mySprite)
-game.onUpdateInterval(1000, function () {
+let SpawnTimer = 9000
+scene.cameraFollowSprite(mySprite)
+game.onUpdateInterval(SpawnTimer, function () {
+    zombie = sprites.create(assets.image`myImage0`, SpriteKind.Enemy)
+    zombie.follow(mySprite, 5)
     tiles.placeOnRandomTile(zombie, assets.tile`myTile1`)
-    zombie.follow(mySprite)
 })
