@@ -1,0 +1,22 @@
+{
+    "image1": {
+        "data": "hwQQABAAAAAA7u7u7u7uDgDuDuDuAO4OAO4O4O4A7g4A7g7g7gDuDgDuDuDuAO4OAO4O4O4A7g4A7g7g7gDuDgDuDuDuAO4OAO4O4O4A7g4A7g7g7gDuDgDuDuDuAO4OAO4O4O4A7g4A7g7g7gDuDgDuDuDuAO4OAO4O4O4A7g4A7u7u7u7uDg==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage"
+    },
+    "image2": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAADAAAAAAADADAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAADAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAMAAAAAMAAAAwAAAAAAADMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage0"
+    },
+    "image3": {
+        "data": "hwQQABAAAAAAAAAAu8wAAAAAALC9vQwAAAAAsN3czQAAAACwXcW9DAAAu9tb1dwMALBbVVtV3AwAu1VVvVXbDABbHV1Vvd0MAFvxX1VV1QywW/9bVFVVDFtbVU1UVVUMtVvVTVRVVQsLsE1EVFW1CwAAz0S0Vb0AAAAAQAu7CwAAAACwAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "blob"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}
