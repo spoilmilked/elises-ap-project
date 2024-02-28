@@ -1,22 +1,37 @@
 namespace SpriteKind {
     export const Block = SpriteKind.create()
 }
-scene.onHitWall(SpriteKind.Player, function (sprite, location) {
-    if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`) || (tiles.tileAtLocationEquals(location, assets.tile`baracade0`) || (tiles.tileAtLocationEquals(location, assets.tile`baracade`) || tiles.tileAtLocationEquals(location, assets.tile`transparency16`)))) {
-        if (controller.B.isPressed()) {
-            if (counter == 3) {
-                tiles.setTileAt(location, assets.tile`baracade1`)
-            } else if (counter == 2) {
-                tiles.setTileAt(location, assets.tile`baracade0`)
-            } else if (counter == 1) {
-                tiles.setTileAt(location, assets.tile`baracade`)
-            }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR0`, function (sprite, location) {
+    location1 = tiles.getTileLocation(11, 3)
+    if (controller.B.isPressed()) {
+        tiles.setWallAt(location1, true)
+        mySprite.sayText("repairing...", 200, true)
+        if (counter == 1) {
+            tiles.setTileAt(location1, assets.tile`baracade`)
+        } else if (counter == 2) {
+            tiles.setTileAt(location1, assets.tile`baracade0`)
+            counter = 1
+        } else if (counter == 3) {
+            tiles.setTileAt(location1, assets.tile`baracade1`)
+            counter = 2
         }
     }
 })
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    projectile2 = sprites.create(assets.image`blade`, SpriteKind.Projectile)
-    projectile2.follow(zombie, 50)
+scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR`, function (sprite, location) {
+    location1 = tiles.getTileLocation(4, 3)
+    if (controller.B.isPressed()) {
+        tiles.setWallAt(location1, true)
+        mySprite.sayText("repairing...", 200, true)
+        if (counter == 1) {
+            tiles.setTileAt(location1, assets.tile`baracade`)
+        } else if (counter == 2) {
+            tiles.setTileAt(location1, assets.tile`baracade0`)
+            counter = 1
+        } else if (counter == 3) {
+            tiles.setTileAt(location1, assets.tile`baracade1`)
+            counter = 2
+        }
+    }
 })
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     if (tiles.tileAtLocationEquals(location, assets.tile`baracade`)) {
@@ -32,7 +47,7 @@ scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`)) {
         sprite.y += -10
         scene.cameraShake(4, 100)
-        tiles.setTileAt(location, assets.tile`transparency16`)
+        tiles.setTileAt(location, assets.tile`myTile2`)
         tiles.setWallAt(location, false)
         counter = 3
     }
@@ -42,10 +57,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.destroy(sprite)
 })
 let zombie: Sprite = null
-let projectile2: Sprite = null
+let location1: tiles.Location = null
 let counter = 0
+let mySprite: Sprite = null
 tiles.setCurrentTilemap(tilemap`testing`)
-let mySprite = sprites.create(assets.image`blob`, SpriteKind.Player)
+mySprite = sprites.create(assets.image`blob`, SpriteKind.Player)
 controller.moveSprite(mySprite)
 let SpawnTimer = 9000
 scene.cameraFollowSprite(mySprite)
