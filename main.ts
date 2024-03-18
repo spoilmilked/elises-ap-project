@@ -27,21 +27,21 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 3
 })
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
-    if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`)) {
+    if (tiles.tileAtLocationEquals(location, assets.tile`baracade`)) {
         sprite.y += -10
         scene.cameraShake(4, 100)
-        counter = 3
         tiles.setTileAt(location, assets.tile`baracade0`)
+        counter = 1
     } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade0`)) {
         sprite.y += -10
         scene.cameraShake(4, 100)
         counter = 2
-        tiles.setTileAt(location, assets.tile`baracade`)
-    } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade`)) {
+        tiles.setTileAt(location, assets.tile`baracade1`)
+    } else if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`)) {
         sprite.y += -10
         scene.cameraShake(4, 100)
         tiles.setTileAt(location, assets.tile`myTile2`)
-        counter = 1
+        counter = 3
         tiles.setWallAt(location, false)
     }
 })
