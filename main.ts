@@ -26,9 +26,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 3
 })
-function ammoBar () {
-	
-}
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     if (tiles.tileAtLocationEquals(location, assets.tile`baracade1`)) {
         sprite.y += -10
