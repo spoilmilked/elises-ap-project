@@ -2,7 +2,8 @@
     "name": "ap project",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2"
     },
     "files": [
         "main.blocks",
@@ -18,7 +19,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.12.47",
+        "target": "1.12.49",
         "targetId": "arcade"
     },
     "supportedTargets": [
