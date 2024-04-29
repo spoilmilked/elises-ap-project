@@ -24,16 +24,16 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 1
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (AMMObar.value == 0) {
+    if (MagicBar.value == 0) {
         if (100 <= info.score()) {
-            AMMObar.value += 100
+            MagicBar.value += 100
             info.changeScoreBy(-100)
             game.splash("reload complete -100")
         } else {
-            game.splash("Not enough AMMO")
+            game.splash("Not enough Magic!")
         }
     }
-    if (AMMObar.value != 0) {
+    if (MagicBar.value != 0) {
         shooting()
     }
 })
@@ -62,16 +62,22 @@ scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 4
 })
-function Ammo2 () {
-    AMMObar = statusbars.create(20, 4, StatusBarKind.Ammo)
-    AMMObar.setLabel("AMMO")
-    AMMObar.attachToSprite(mySprite)
-    AMMObar.value = 100
-}
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     sprites.destroy(sprite)
 })
+function GameDiff (num: number) {
+    MagicBar = statusbars.create(20, 4, StatusBarKind.Ammo)
+    MagicBar.setLabel("Power")
+    MagicBar.attachToSprite(mySprite)
+    if ((5 as any) < (0 as any)) {
+        MagicBar.value = num * 30
+    }
+    if (5 < num && 10 > num) {
+        MagicBar.value = num * 10
+    }
+    info.setScore(100)
+}
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 2
 })
@@ -94,7 +100,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR`, function (sprite, loc
     }
 })
 function shooting () {
-    AMMObar.value += -10
+    MagicBar.value += -10
     if (DirectionTracker == 1) {
         projectile = sprites.createProjectileFromSprite(assets.image`blade`, mySprite, 0, -31)
     } else if (DirectionTracker == 2) {
@@ -117,7 +123,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 let zombie: Sprite = null
 let statusbar: StatusBarSprite = null
 let projectile: Sprite = null
-let AMMObar: StatusBarSprite = null
+let MagicBar: StatusBarSprite = null
 let DirectionTracker = 0
 let location1: tiles.Location = null
 let counter = 0
@@ -127,11 +133,10 @@ mySprite = sprites.create(assets.image`blob`, SpriteKind.Player)
 controller.moveSprite(mySprite)
 scene.cameraFollowSprite(mySprite)
 counter = 0
-Ammo2()
 info.setLife(3)
 game.splash("Press A to shoot B to repair baracade")
-info.setScore(100)
-game.onUpdateInterval(2000, function () {
+GameDiff(game.askForNumber("difficulty", 1))
+game.onUpdateInterval(200, function () {
     statusbar = statusbars.create(18, 2, StatusBarKind.Health)
     zombie = sprites.create(assets.image`myImage0`, SpriteKind.Enemy)
     zombie.follow(mySprite, 5)
