@@ -65,6 +65,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     sprites.destroy(sprite)
+    if (true) {
+        game.setGameOverMessage(false, "GAME OVER!")
+        game.setGameOverScoringType(game.ScoringType.HighScore)
+    }
 })
 function GameDiff (num: number) {
     MagicBar = statusbars.create(20, 4, StatusBarKind.Ammo)
@@ -136,7 +140,7 @@ counter = 0
 info.setLife(3)
 game.splash("Press A to shoot B to repair baracade")
 GameDiff(game.askForNumber("difficulty", 1))
-game.onUpdateInterval(200, function () {
+game.onUpdateInterval(2000, function () {
     statusbar = statusbars.create(18, 2, StatusBarKind.Health)
     zombie = sprites.create(assets.image`myImage0`, SpriteKind.Enemy)
     zombie.follow(mySprite, 5)
