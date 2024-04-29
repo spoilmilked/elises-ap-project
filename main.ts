@@ -23,6 +23,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR0`, function (sprite, lo
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 1
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    info.changeScoreBy(20)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (MagicBar.value == 0) {
         if (100 <= info.score()) {
@@ -37,6 +41,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         shooting()
     }
 })
+function Buffs () {
+    if (info.life() <= 1) {
+        list = [sprites.create(assets.image`Star`, SpriteKind.Food), sprites.create(assets.image`heart`, SpriteKind.Food)]
+        tiles.placeOnRandomTile(list._pickRandom(), sprites.castle.tilePath5)
+    }
+    if (info.life() > 1) {
+        list = [sprites.create(assets.image`meat`, SpriteKind.Block), sprites.create(assets.image`apple`, SpriteKind.Block)]
+        tiles.placeOnRandomTile(list._pickRandom(), sprites.castle.tilePath5)
+    }
+}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 3
 })
@@ -65,10 +79,6 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     sprites.destroy(sprite)
-    if (true) {
-        game.setGameOverMessage(false, "GAME OVER!")
-        game.setGameOverScoringType(game.ScoringType.HighScore)
-    }
 })
 function GameDiff (num: number) {
     MagicBar = statusbars.create(20, 4, StatusBarKind.Ammo)
@@ -84,6 +94,11 @@ function GameDiff (num: number) {
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     DirectionTracker = 2
+})
+info.onLifeZero(function () {
+    game.gameOver(false)
+    game.setGameOverMessage(false, "GAME OVER!")
+    game.setGameOverScoringType(game.ScoringType.HighScore)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR`, function (sprite, location) {
     location1 = tiles.getTileLocation(4, 3)
@@ -102,6 +117,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`FLOOR`, function (sprite, loc
             }
         }
     }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    info.changeLifeBy(1)
 })
 function shooting () {
     MagicBar.value += -10
@@ -127,6 +146,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 let zombie: Sprite = null
 let statusbar: StatusBarSprite = null
 let projectile: Sprite = null
+let list: Sprite[] = []
 let MagicBar: StatusBarSprite = null
 let DirectionTracker = 0
 let location1: tiles.Location = null
@@ -134,13 +154,18 @@ let counter = 0
 let mySprite: Sprite = null
 tiles.setCurrentTilemap(tilemap`testing`)
 mySprite = sprites.create(assets.image`blob`, SpriteKind.Player)
+mySprite.setPosition(43, 46)
 controller.moveSprite(mySprite)
 scene.cameraFollowSprite(mySprite)
 counter = 0
 info.setLife(3)
 game.splash("Press A to shoot B to repair baracade")
 GameDiff(game.askForNumber("difficulty", 1))
-game.onUpdateInterval(2000, function () {
+game.splash("Try to get the most money!")
+game.onUpdateInterval(5000, function () {
+    Buffs()
+})
+game.onUpdateInterval(5000, function () {
     statusbar = statusbars.create(18, 2, StatusBarKind.Health)
     zombie = sprites.create(assets.image`myImage0`, SpriteKind.Enemy)
     zombie.follow(mySprite, 5)
